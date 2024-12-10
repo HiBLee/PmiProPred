@@ -70,22 +70,6 @@ class CBAM(nn.Module):
 
         return x
 
-# class FusionBlock(nn.Module):
-#     def __init__(self, conv, in_channels, kernel_size, bias=True, bn=True, activator=nn.ReLU(True)):
-#         super(FusionBlock, self).__init__()
-#         modules_body = []
-#         for i in range(2):
-#             modules_body.append(conv(in_channels, in_channels, kernel_size, bias=bias))
-#             if bn:
-#                 modules_body.append(nn.BatchNorm1d(in_channels))
-#             if i == 0:
-#                 modules_body.append(activator)
-#         self.body = nn.Sequential(*modules_body)
-#
-#     def forward(self, x):
-#         res = self.body(x)
-#         res += x
-#         return res
 
 class HTC(nn.Module):
     def __init__(self, embedding_dim, num_embeddings, num_heads, n_layers, n_fusionblocks, ffn_num_hiddens, dropout):
@@ -137,19 +121,7 @@ class HTC(nn.Module):
 
         feature_map_cat = torch.cat((tb, cb3, cb5, cb7), 1)
         x = self.fusion_block(feature_map_cat)
-        # fb = feature_map_cat
-        # for i in range(self.n_fusionblocks):
-        #     fb = self.fusion_block[i](fb)
-        # x = fb
-
-        # f = tb + cb3 + cb5 + cb7
-        # fb = f
-        # fb = fb.transpose(1, 2)
-        # for i in range(self.n_fusionblocks):
-        #     fb = self.fusion_block[i](fb)
-        # fb = fb.transpose(1, 2)
-        # x = fb + f
-
+        
         return x
 
 class MLP(nn.Module):
